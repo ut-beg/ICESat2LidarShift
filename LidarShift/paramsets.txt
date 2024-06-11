@@ -1,4 +1,0 @@
--i "D:\lidarshift\S12_original_HD_CtXYZ.csv" -sif "D:\lidarshift\FL1C_ATL07_S12_13_14.txt" -w "D:\lidarshift\crap.gdb" -si 1.8 -sf 1.8 -ss 0.1 -bi 188 -bf 188 -bs 1 -l green -t0 232566.3 -t1 232571.1 -ct0 233567.00 -ct1 233833.00 -st lvis -o "D:\lidarshift\hds12" -m 1 -ed y
-
--i "D:\lidarshift\20220726_RGT531_QD064_FL1_SC_TD_UTM16_revised_geocorr-applied_v2_13_ellipsoid_utm.txt" -sif "D:\lidarshift\FL1C_ATL07_S12_13_14.txt" -w "D:\lidarshift\crap.gdb" -si 1.5 -sf 2.4 -ss 0.1 -bi 180 -bf 210 -bs 1 -l green -t0 232566.3 -t1 232571.1 -ct0 233567.00 -ct1 233833.00 -st lvis -o "D:\lidarshift\s13" -m 16 -ed n
-

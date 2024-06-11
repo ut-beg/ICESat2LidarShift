@@ -26,7 +26,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="LidarShift.py" />
-    <Compile Include="PrepareOrigCsv.py" />
   </ItemGroup>
   <ItemGroup>
     <InterpreterReference Include="Global|VisualStudio|arcgispro-py3" />
@@ -35,7 +34,6 @@
     <InterpreterReference Include="Global|VisualStudio|cudapy" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="paramsets.txt" />
     <Content Include="readme.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
