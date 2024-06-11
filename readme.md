@@ -31,6 +31,7 @@ Finally, use ArcGIS Pro to create an empty file geodatabase, and copy the path, 
 Usage (all parameters are required):
 
 propy.bat LidarShift.py 
+
 	-i [Input file - this is a fixed-width text file containing the Chiroptera point data]
 	-sif [Satellite input file - this is a fixed-width text file containing the satellite point data]
 	-w [ArcGIS Workspace Path - the path to an ArcGIS File Geodatabase] 
