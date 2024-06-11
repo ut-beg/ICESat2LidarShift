@@ -1,8 +1,7 @@
-﻿#=========================================================================================================
-# Readme for LidarShift.py
+﻿#===============================
 # Aaron Averett and Kutalmis Saylam - Bureau of Economic Geology - The University of Texas at Austin
 # Copyright 2023, The University of Texas at Austin
-#=========================================================================================================
+#===============================
 
 This directory contains the source code for LidarShift.py, a Python script for adjusting the data produced by BEG's Chiroptera 4X lidar sensor during the time period between the satellite and corresponding aircraft overflight during the July of 2022 field campaign.
 
