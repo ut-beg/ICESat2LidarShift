@@ -1,7 +1,6 @@
-# Readme for Lidarshift.py
+# Readme for LidarShift.py
 # Aaron Averett and Kutalmis Saylam - Bureau of Economic Geology - The University of Texas at Austin
 # Copyright 2023, The University of Texas at Austin
-
 
 This directory contains the source code for LidarShift.py, a Python script for adjusting the data produced by BEG's Chiroptera 4X lidar sensor during the time period between the satellite and corresponding aircraft overflight during the July of 2022 field campaign.
 
@@ -14,8 +13,6 @@ X_C = X_0 + (t * cos⁡(θ) * V)
 Y_C = Y_0 + (t * sin⁡(θ) * V)
 
 This process is done iteratively, once for each combination of drift speed and bearing that falls within the given ranges.  The results of each shift operation are then compared to the values found in the supplied ATLAS sensor data file, and a linear regression is performed.  The results of that comparison are finally written to a report file in .csv format.
-
-A complete set of example data files and a batch file containing the appropriate commands to launch the script are included.
 
 Requirements:
 
@@ -64,11 +61,14 @@ Z: Height measurement
 
 Example of Chiroptera fixed width format:
 
-9.000000 233764.125109 577869.070000 9518705.140000 0.022123
-9.000000 233764.125115 577869.320000 9518704.660000 -0.007882
-9.000000 233764.125122 577869.570000 9518704.169900 -0.037887
-9.000000 233764.125129 577869.800000 9518703.680000 -0.027891
-9.000000 233764.125135 577870.030000 9518703.190000 0.002104
+	9.000000 233764.125109 577869.070000 9518705.140000 0.022123
+	9.000000 233764.125115 577869.320000 9518704.660000 -0.007882
+	9.000000 233764.125122 577869.570000 9518704.169900 -0.037887
+	9.000000 233764.125129 577869.800000 9518703.680000 -0.027891
+	9.000000 233764.125135 577870.030000 9518703.190000 0.002104
+
+An example file, which is too large to include in the GitHub repo, can be found here:
+https://coastal.beg.utexas.edu/hostedfiles/Chiroptera_S14.txt
 
 Satellite Fixed Width Format:
 
@@ -82,8 +82,11 @@ Z: Height measurement
 
 Example of Satellite Fixed Width Format:
 
-578527.39 9520949.78 0.30
-578526.28 9520946.33 0.23
-578524.92 9520942.15 0.35
-578523.35 9520937.31 0.09
-578522.24 9520933.89 0.00
+	578527.39 9520949.78 0.30
+	578526.28 9520946.33 0.23
+	578524.92 9520942.15 0.35
+	578523.35 9520937.31 0.09
+	578522.24 9520933.89 0.00
+
+An example file, which is too large to include in the GitHub repo, can be found here:
+https://coastal.beg.utexas.edu/hostedfiles/FL1C_ATL07_S12_13_14_3l.txt
