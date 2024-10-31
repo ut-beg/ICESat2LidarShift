@@ -9,7 +9,7 @@
 from cmath import isnan
 from ctypes import ArgumentError
 from re import I
-from statistics import mean
+from statistics import mean, stdev
 import pandas as pd
 import datetime
 import arcpy
@@ -21,7 +21,7 @@ import math
 import numpy as np
 #Need this extra import to provide a local reference to numpy.power when we call it from a dataframe.query
 #Apparently, you can't do np.power() in a df.query
-from numpy import power as nppower
+from numpy import median, power as nppower
 import datetime
 from numba import jit
 from scipy import stats
@@ -162,7 +162,7 @@ def calcChiropteraElevationForATL03Point(chiropteraDataFrame, atl03X, atl03Y, sp
 
     maxZ = relevantPoints["z"].mean()
 
-    return maxZ
+    return maxZ, shape2[0]
 
 def compareToATL03(chiropteraDataFrame, atl03DataFrame, cMaxX, cMinX, cMaxY, cMinY):
     """
@@ -174,6 +174,7 @@ def compareToATL03(chiropteraDataFrame, atl03DataFrame, cMaxX, cMinX, cMaxY, cMi
     #Array to hold our difference values
     chiropteraElevs = []
     atl03Elevs = []
+    pointCounts=[]
    
     atl03InBoundsDataFrame = atl03DataFrame.query("`SHAPE@X` >= @cMinX and `SHAPE@X` <= @cMaxX and `SHAPE@Y` >= @cMinY and `SHAPE@Y` <= @cMaxY")
 
@@ -183,14 +184,16 @@ def compareToATL03(chiropteraDataFrame, atl03DataFrame, cMaxX, cMinX, cMaxY, cMi
         y = row["SHAPE@Y"]
         z = row["z"]
        
-        chiropteraElev = calcChiropteraElevationForATL03Point(chiropteraDataFrame, x, y, ATL03_SPOT_SIZE)
+        chiropteraElev, pointCount = calcChiropteraElevationForATL03Point(chiropteraDataFrame, x, y, ATL03_SPOT_SIZE)
 
-        if not isnan(chiropteraElev) and not isnan(z):
+        if not isnan(chiropteraElev) and not isnan(z) and not isnan(pointCount):
 
             chiropteraElevs.append(chiropteraElev)
             atl03Elevs.append(z)
+            pointCounts.append(pointCount)
+            
 
-    return chiropteraElevs, atl03Elevs
+    return chiropteraElevs, atl03Elevs, pointCounts
 
 def processWithSpeedAndBearing(argSet):
     """
@@ -253,7 +256,7 @@ def processWithSpeedAndBearing(argSet):
         npaATL03 = arcpy.da.FeatureClassToNumPyArray(atl03FCPath, ["SHAPE@X", "SHAPE@Y", "z"])
         atl03DataFrame = pd.DataFrame(npaATL03)
     
-        chiropteraZs, atl03Zs = compareToATL03(chiropteraDataFrame, atl03DataFrame, cMaxX, cMinX, cMaxY, cMinY)
+        chiropteraZs, atl03Zs, pointCounts = compareToATL03(chiropteraDataFrame, atl03DataFrame, cMaxX, cMinX, cMaxY, cMinY)
 
         dfZs = pd.DataFrame(columns=["c","a"])
 
@@ -267,9 +270,15 @@ def processWithSpeedAndBearing(argSet):
             exportShiftedDataPath = os.path.join(outputDataPath, "{0}.csv".format(fcName))
             chiropteraDataFrame.to_csv(exportShiftedDataPath, index=False, header=False)
     
-        resultRow = [curBearing, driftMetersPerSecond * 60.0, None, None, None, None, None, None, None, 0]
+        resultRow = [curBearing, driftMetersPerSecond * 60.0, None, None, None, None, None, None, None, 0, None, None, None, None, None]
     
         if len(chiropteraZs) > 0 and len(atl03Zs) > 0 and len(chiropteraZs) == len(atl03Zs):
+            
+            chiropteracount_min = min(pointCounts)
+            chiropteracount_max = max(pointCounts)
+            chiropteracount_mean = mean(pointCounts)
+            chiropteracount_median = median(pointCounts)
+            chiropteracount_stdev = stdev(pointCounts)
     
             slope, intercept, r_value, p_value, std_err = stats.linregress(atl03Zs, chiropteraZs)
 
@@ -281,7 +290,7 @@ def processWithSpeedAndBearing(argSet):
             rmse = math.sqrt(np.square((np.subtract(npaatlz, npacz))).mean())
             print("R^2: {0}, RMSE: {1}".format(rsquared, rmse))
         
-            ret = [curBearing, driftMetersPerSecond * 60.0, slope, intercept, r_value, p_value, std_err, rsquared, rmse, len(chiropteraZs)]
+            ret = [curBearing, driftMetersPerSecond * 60.0, slope, intercept, r_value, p_value, std_err, rsquared, rmse, len(chiropteraZs), chiropteracount_min, chiropteracount_max, chiropteracount_mean, chiropteracount_median, chiropteracount_stdev]
 
     
     
@@ -439,7 +448,7 @@ def main():
 
     bearingStep = driftBearingStepSize
 
-    dfParamSets = pd.DataFrame(columns=["driftbearing", "driftspeed", "slope","intercept", "r","p", "std_err","rsquared", "rmse", "intersectCount"])
+    dfParamSets = pd.DataFrame(columns=["driftbearing", "driftspeed", "slope","intercept", "r","p", "std_err","rsquared", "rmse", "intersectCount", "chiropteracount_min", "chiropteracount_max", "chiropteracount_mean", "chiropteracount_median", "chiropteracount_stdev"])
 
     runArgSets = []
 

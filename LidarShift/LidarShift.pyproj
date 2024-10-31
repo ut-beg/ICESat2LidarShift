@@ -13,7 +13,7 @@
     <RootNamespace>LidarShift</RootNamespace>
     <InterpreterId>Global|VisualStudio|cudapy</InterpreterId>
     <LaunchProvider>Standard Python launcher</LaunchProvider>
-    <CommandLineArguments>-i "D:\lidarshift\20220726_RGT531_QD064_FL1_SC_TD_UTM16_revised_geocorr-applied_v2_14_ellipsoid_utm.txt" -sif "D:\lidarshift\FL1C_ATL07_S12_13_14_3l.csv" -w "D:\lidarshift\crap.gdb" -si 1.7 -sf 1.7 -ss 0.1 -bi 190 -bf 190 -bs 1 -t0 232566.3 -t1 232571.1 -ct0 233567.00 -ct1 233833.00 -o "D:\lidarshift\s14_2" -m 1 -sd n -ed y </CommandLineArguments>
+    <CommandLineArguments>-i "D:\lidarshift\20220726_RGT531_QD064_FL1_SC_TD_UTM16_revised_geocorr-applied_v2_14_freetide.csv" -sif "D:\lidarshift\0726_FL1C_3l_3r_XYZ.xyz" -w "D:\lidarshift\crap.gdb" -si 1.2 -sf 2.8 -ss 0.1 -bi 180 -bf 210 -bs 1 -t0 232566.3 -t1 232571.1 -ct0 233567.00 -ct1 233833.00 -o "D:\lidarshift\s14_both_new" -m 15 -sd n -ed y </CommandLineArguments>
     <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
